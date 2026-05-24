@@ -6,7 +6,7 @@ import Dashboard from '@/components/Dashboard';
 import ExpenseForm from '@/components/ExpenseForm';
 import ExpenseList from '@/components/ExpenseList';
 import FilterBar from '@/components/FilterBar';
-import { exportToCSV } from '@/lib/utils';
+import ExportHub from '@/components/ExportHub';
 
 const defaultFilter: ExpenseFilter = { category: 'All', dateFrom: '', dateTo: '', search: '' };
 
@@ -14,6 +14,7 @@ export default function Home() {
   const { expenses, isLoaded, addExpense, updateExpense, deleteExpense } = useExpenses();
   const [tab, setTab] = useState<'dashboard' | 'expenses'>('dashboard');
   const [showForm, setShowForm] = useState(false);
+  const [showHub, setShowHub] = useState(false);
   const [filter, setFilter] = useState<ExpenseFilter>(defaultFilter);
 
   const filtered = useMemo(() => {
@@ -40,10 +41,10 @@ export default function Home() {
           </div>
           <div className="flex gap-2">
             <button
-              onClick={() => exportToCSV(filtered)}
-              className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg transition-colors font-medium"
+              onClick={() => setShowHub(true)}
+              className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg transition-colors font-medium flex items-center gap-1.5"
             >
-              Export CSV
+              Export Data
             </button>
             <button
               onClick={() => setShowForm(v => !v)}
@@ -98,6 +99,10 @@ export default function Home() {
           </div>
         )}
       </main>
+
+      {showHub && (
+        <ExportHub expenses={expenses} onClose={() => setShowHub(false)} />
+      )}
     </div>
   );
 }
