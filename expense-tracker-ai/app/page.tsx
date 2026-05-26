@@ -9,12 +9,13 @@ import FilterBar from '@/components/FilterBar';
 import ExportHub from '@/components/ExportHub';
 import TopCategories from '@/components/TopCategories';
 import TopVendors from '@/components/TopVendors';
+import MonthlyInsights from '@/components/MonthlyInsights';
 
 const defaultFilter: ExpenseFilter = { category: 'All', dateFrom: '', dateTo: '', search: '' };
 
 export default function Home() {
   const { expenses, isLoaded, addExpense, updateExpense, deleteExpense } = useExpenses();
-  const [tab, setTab] = useState<'dashboard' | 'expenses' | 'categories' | 'vendors'>('dashboard');
+  const [tab, setTab] = useState<'dashboard' | 'expenses' | 'categories' | 'vendors' | 'insights'>('dashboard');
   const [showForm, setShowForm] = useState(false);
   const [showHub, setShowHub] = useState(false);
   const [filter, setFilter] = useState<ExpenseFilter>(defaultFilter);
@@ -72,7 +73,7 @@ export default function Home() {
 
         {/* Tabs */}
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-          {(['dashboard', 'expenses', 'categories', 'vendors'] as const).map(t => (
+          {(['dashboard', 'expenses', 'categories', 'vendors', 'insights'] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -80,7 +81,7 @@ export default function Home() {
                 tab === t ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {t === 'dashboard' ? '📊 Dashboard' : t === 'expenses' ? '📋 Expenses' : t === 'categories' ? '🏷️ Top Categories' : '🏪 Top Vendors'}
+              {t === 'dashboard' ? '📊 Dashboard' : t === 'expenses' ? '📋 Expenses' : t === 'categories' ? '🏷️ Top Categories' : t === 'vendors' ? '🏪 Top Vendors' : '💡 Insights'}
             </button>
           ))}
         </div>
@@ -93,6 +94,8 @@ export default function Home() {
           <TopCategories expenses={expenses} />
         ) : tab === 'vendors' ? (
           <TopVendors expenses={expenses} />
+        ) : tab === 'insights' ? (
+          <MonthlyInsights expenses={expenses} />
         ) : (
           <div className="space-y-4">
             <FilterBar filter={filter} onChange={setFilter} />

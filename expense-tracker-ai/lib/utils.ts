@@ -97,6 +97,22 @@ export function getTopVendors(expenses: Expense[], limit = 10): VendorSummary[] 
     .slice(0, limit);
 }
 
+export function getBudgetStreak(expenses: Expense[]): number {
+  const daysWithExpenses = new Set(expenses.map(e => e.date));
+  const current = new Date();
+  let streak = 0;
+  while (true) {
+    const y = current.getFullYear();
+    const m = String(current.getMonth() + 1).padStart(2, '0');
+    const d = String(current.getDate()).padStart(2, '0');
+    const dateStr = `${y}-${m}-${d}`;
+    if (!daysWithExpenses.has(dateStr)) break;
+    streak++;
+    current.setDate(current.getDate() - 1);
+  }
+  return streak;
+}
+
 export function getLast6MonthsData(expenses: Expense[]): { month: string; total: number }[] {
   const now = new Date();
   const result = [];
