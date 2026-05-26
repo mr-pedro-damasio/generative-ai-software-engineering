@@ -1,0 +1,2 @@
+Explore the codebase using 4 tasks in parallel. 
+Each agent should explore different directories.
