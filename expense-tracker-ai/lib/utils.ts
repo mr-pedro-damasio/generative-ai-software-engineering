@@ -69,6 +69,34 @@ export function getTotalByCategory(expenses: Expense[]): Record<string, number> 
   }, {} as Record<string, number>);
 }
 
+export interface VendorSummary {
+  name: string;
+  total: number;
+  count: number;
+  category: Category;
+}
+
+export function getTopVendors(expenses: Expense[], limit = 10): VendorSummary[] {
+  const map = new Map<string, { total: number; count: number; categoryCounts: Map<Category, number> }>();
+  for (const e of expenses) {
+    const key = e.description.trim().toLowerCase();
+    if (!map.has(key)) map.set(key, { total: 0, count: 0, categoryCounts: new Map() });
+    const entry = map.get(key)!;
+    entry.total += e.amount;
+    entry.count += 1;
+    entry.categoryCounts.set(e.category, (entry.categoryCounts.get(e.category) || 0) + 1);
+  }
+  return Array.from(map.entries())
+    .map(([key, { total, count, categoryCounts }]) => {
+      const expenses_with_key = expenses.find(e => e.description.trim().toLowerCase() === key);
+      const displayName = expenses_with_key ? expenses_with_key.description.trim() : key;
+      const category = [...categoryCounts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+      return { name: displayName, total, count, category };
+    })
+    .sort((a, b) => b.total - a.total)
+    .slice(0, limit);
+}
+
 export function getLast6MonthsData(expenses: Expense[]): { month: string; total: number }[] {
   const now = new Date();
   const result = [];
