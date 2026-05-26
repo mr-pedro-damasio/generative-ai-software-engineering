@@ -7,12 +7,13 @@ import ExpenseForm from '@/components/ExpenseForm';
 import ExpenseList from '@/components/ExpenseList';
 import FilterBar from '@/components/FilterBar';
 import ExportHub from '@/components/ExportHub';
+import TopCategories from '@/components/TopCategories';
 
 const defaultFilter: ExpenseFilter = { category: 'All', dateFrom: '', dateTo: '', search: '' };
 
 export default function Home() {
   const { expenses, isLoaded, addExpense, updateExpense, deleteExpense } = useExpenses();
-  const [tab, setTab] = useState<'dashboard' | 'expenses'>('dashboard');
+  const [tab, setTab] = useState<'dashboard' | 'expenses' | 'categories'>('dashboard');
   const [showForm, setShowForm] = useState(false);
   const [showHub, setShowHub] = useState(false);
   const [filter, setFilter] = useState<ExpenseFilter>(defaultFilter);
@@ -70,7 +71,7 @@ export default function Home() {
 
         {/* Tabs */}
         <div className="flex gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-          {(['dashboard', 'expenses'] as const).map(t => (
+          {(['dashboard', 'expenses', 'categories'] as const).map(t => (
             <button
               key={t}
               onClick={() => setTab(t)}
@@ -78,7 +79,7 @@ export default function Home() {
                 tab === t ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-600 hover:text-gray-900'
               }`}
             >
-              {t === 'dashboard' ? '📊 Dashboard' : '📋 Expenses'}
+              {t === 'dashboard' ? '📊 Dashboard' : t === 'expenses' ? '📋 Expenses' : '🏷️ Top Categories'}
             </button>
           ))}
         </div>
@@ -87,6 +88,8 @@ export default function Home() {
           <div className="text-center py-16 text-gray-400">Loading...</div>
         ) : tab === 'dashboard' ? (
           <Dashboard expenses={expenses} />
+        ) : tab === 'categories' ? (
+          <TopCategories expenses={expenses} />
         ) : (
           <div className="space-y-4">
             <FilterBar filter={filter} onChange={setFilter} />
