@@ -1,0 +1,50 @@
+Feature: Top Vendors
+Branch: feature/top-vendors
+Worktree: /workspaces/expense-tracker-top-vendors
+
+## What Was Implemented
+A "Top Vendors" analytics tab added to the ExpenseTracker app. It groups expenses by
+description (case-insensitive) and ranks vendors by total spending, showing up to 10.
+
+## Files Created
+- components/TopVendors.tsx (new)
+  - Accepts `expenses: Expense[]`
+  - Renders ranked vendor list (#1..#10) with progress bars
+  - Displays: rank badge, category icon, vendor name, category chip (colored), transaction
+    count, total amount, relative progress bar
+  - Empty state when no expenses exist
+  - Uses CATEGORY_COLORS, CATEGORY_ICONS, getTopVendors from lib/utils.ts
+
+## Files Modified
+- lib/utils.ts
+  - Added `VendorSummary` interface: { name, total, count, category }
+  - Added `getTopVendors(expenses, limit=10)` function:
+    - Groups by description.trim().toLowerCase() (case-insensitive dedup)
+    - Preserves original casing of first-seen description as display name
+    - Determines dominant category via most-frequent-category logic
+    - Returns array sorted by total descending, sliced to limit
+
+- app/page.tsx
+  - Added `import TopVendors from '@/components/TopVendors'`
+  - Extended tab state type: `'dashboard' | 'expenses' | 'vendors'`
+  - Added "🏪 Top Vendors" button to tab bar
+  - Added `tab === 'vendors'` branch rendering `<TopVendors expenses={expenses} />`
+
+## Dependencies Added
+None. Pure TypeScript logic + existing Tailwind utilities.
+
+## Testing Approach
+- `npm run build` completed successfully (exit code 0, Turbopack, Next.js 16.2.6)
+- TypeScript strict mode — no type errors
+- No new dependencies introduced
+
+## Integration Notes
+To merge into main:
+  git checkout main
+  git merge feature/top-vendors
+
+The only conflict risk is app/page.tsx if the top-categories feature is merged first
+(both add a tab). Resolve by combining all three tab additions in page.tsx.
+
+Suggested final page.tsx tab union type after both merges:
+  'dashboard' | 'expenses' | 'categories' | 'vendors'
