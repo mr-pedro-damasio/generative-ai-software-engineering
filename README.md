@@ -2,7 +2,7 @@
 
 > A language-agnostic GitHub Template Repository with a fully configured dev container, GitHub Codespaces support, and AI coding assistants (Claude Code, GitHub Copilot, Gemini) ready out of the box.
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mr-pedro-damasio/zero-config-devcontainer)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/mr-pedro-damasio/claude-code-software-engineering-with-generative-ai-agents)
 
 ---
 
@@ -26,11 +26,11 @@ This template provides a zero-configuration starting point for any new project. 
 
 ### Creating a new repository from this template
 
-Click **"Use this template"** at the top of the [GitHub repository page](https://github.com/mr-pedro-damasio/zero-config-devcontainer), or use the GitHub CLI:
+Clone the repository:
 
-```bash
-gh repo create my-project --template mr-pedro-damasio/zero-config-devcontainer
-```
+\`\`\`bash
+git clone https://github.com/mr-pedro-damasio/claude-code-software-engineering-with-generative-ai-agents
+\`\`\`
 
 Then follow one of the options below to open your new project.
 
@@ -93,7 +93,7 @@ This template is intentionally stack-agnostic. After creating a project from it:
 
 ## Contributing
 
-Contributions to this template are welcome! Please open an issue or pull request on [GitHub](https://github.com/mr-pedro-damasio/zero-config-devcontainer).
+Contributions to this template are welcome! Please open an issue or pull request on [GitHub](https://github.com/mr-pedro-damasio/claude-code-software-engineering-with-generative-ai-agents).
 
 When contributing:
 - Keep the template language-agnostic (do not add stack-specific tooling to the base config).
